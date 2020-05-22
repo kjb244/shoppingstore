@@ -2,14 +2,19 @@
     <div>
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand href="#">Shopping App</b-navbar-brand>
+            <b-navbar-nav>
+                <b-nav-item href="#" v-on:click="clickCart()">
+                    <font-awesome-icon icon="shopping-cart" class="mr-1 fa-2x white" />
+                    <b-badge variant="light">9</b-badge>
+
+                </b-nav-item>
+            </b-navbar-nav>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
 
-                <b-navbar-nav>
-                    <b-nav-item href="#">Shopping Cart</b-nav-item>
-                </b-navbar-nav>
+
 
 
                 <!-- Right aligned nav items -->
@@ -32,18 +37,26 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
+        <cart-side-bar :props="cart"></cart-side-bar>
+
     </div>
 
 </template>
 
 <script>
-
+    import CartSideBar from './cartsidebar.vue';
 
     export default {
         name: 'navbar',
-        props: [],
+        components:{
+            CartSideBar
+
+        },
         data(){
             return{
+                cart: {
+                    open: false,
+                },
                 search: '',
 
             }
@@ -51,11 +64,18 @@
         watch: {
 
         },
+        methods: {
+          clickCart: function(){
+              this.cart.open = !this.cart.open;
+          }
+        },
         created: function(){
         }
     }
 </script>
 
 <style scoped>
-
+    .white{
+        color:white;
+    }
 </style>

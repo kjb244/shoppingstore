@@ -47,7 +47,12 @@
                                             <p>{{rec.subHeading}}</p>
                                             <p><b>{{rec.price}}</b></p>
                                         </b-card-text>
-                                        <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">Add</b-button>
+                                        <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">
+                                            Add
+                                            <b-badge v-if="showCart(rec)" variant="light">
+                                                <font-awesome-icon icon="cart-plus" />
+                                            </b-badge>
+                                        </b-button>
 
                                     </b-card>
                                 </div>
@@ -66,7 +71,12 @@
                                                     <p>{{rec.subHeading}}</p>
                                                     <p><b>{{rec.price}}</b></p>
                                                     <br>
-                                                    <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">Add</b-button>
+                                                    <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">
+                                                        Add
+                                                        <b-badge v-if="showCart(rec)" variant="light">
+                                                            <font-awesome-icon icon="cart-plus" class="" />
+                                                        </b-badge>
+                                                    </b-button>
                                                 </b-card-text>
                                             </b-card-body>
                                         </b-col>
@@ -135,7 +145,7 @@
         },
         computed:{
             ...mapGetters([
-                'jcrData',
+                'jcrData', 'cartData',
             ]),
             filterCheckboxesAndSearch(){
 
@@ -178,6 +188,13 @@
             addItemClick: function(item){
                 this.modal.item = item;
                 this.modal.showModal = true;
+            },
+            showCart: function(item){
+                const cd = this.cartData[this.route];
+                if(cd && cd.find(e => e.heading === item.heading)){
+                    return true;
+                }
+                return false;
             }
 
         },

@@ -21,6 +21,9 @@ export default new Vuex.Store({
     jcrData: (state) => {
         return state.routeData.jcrData
     },
+    cartData: (state) => {
+        return state.cartData;
+    }
   },
   mutations: {
     CLICK_ITEM: function(state,item){
@@ -30,12 +33,14 @@ export default new Vuex.Store({
 
     },
     ADD_TO_CART: function(state, data){
-        const {route, item} = data;
-        const hashArr = [...state.cartData[route] || [],...[item]];
+        const {route, item, quantity} = data;
+        const hashArr = (state.cartData[route] || []).filter(e => e.heading !== item.heading);
+        hashArr.push({...item, quantity});
         state.cartData = {
             ...state.cartData,
             [route]: hashArr
         };
+        console.log(state.cartData);
     },
     NEXT_ROUTE: function(state, route){
         const visitedRoutes = state.routeData.visitedRoutes;

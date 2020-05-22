@@ -21,9 +21,11 @@
             </b-row>
             <template v-slot:modal-footer>
                 <div class="w-100">
+                    <p v-if="alreadyInCart()" class="red-me">It appears this item is already in your cart. Adding it again will remove the item and replace it.</p>
                     <b-button variant="primary" size="md" class="float-right" v-on:click="addToCartClick();showModal=false">
                         Add
                     </b-button>
+
                 </div>
             </template>
         </b-modal>
@@ -36,7 +38,7 @@
 
 <script>
     import Vue from 'vue';
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
 
     import {CardPlugin} from 'bootstrap-vue';
 
@@ -55,16 +57,27 @@
                 quantitySelected:{
                     selected: 1,
                     options:[...Array(11).keys()].slice(1)
-                }
+                },
             }
         },
         computed:{
+            ...mapGetters([
+                'cartData',
+            ]),
 
         },
         methods: {
             ...mapActions([
                 'addToCart'
             ]),
+            alreadyInCart(){
+                const node = this.cartData[this.route];
+                if (node){
+                    const here = node.find(e => e.heading === this.item.heading);
+                    if(here) return true;
+                }
+                return false;
+            },
             hide: function(){
                 this.node.showModal = false;
                 this.quantitySelected.selected = 1;
@@ -75,7 +88,11 @@
                     quantity: this.quantity,
                     route: this.route
                 };
-                this.addToCart(data);
+                //first let the modal close then add it; already in cart method was firing immediately on state change
+                // and showing stuff on change
+                setTimeout(() => {
+                    this.addToCart(data);
+                },200);
             }
         },
         watch:{
@@ -84,7 +101,8 @@
             },
             'node.item': function(newVal){
                 this.item = newVal;
-            }
+            },
+
 
         },
         created: function(){
@@ -95,6 +113,10 @@
 </script>
 
 <style scoped>
+
+    .red-me{
+        color: #ec4242;
+    }
 
 
 
