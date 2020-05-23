@@ -37,7 +37,7 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-        <cart-side-bar :props="cart"></cart-side-bar>
+        <cart-side-bar @cartClosed="onCartClosed" :openProp="cart.open"></cart-side-bar>
 
     </div>
 
@@ -67,6 +67,9 @@
         methods: {
           clickCart: function(){
               this.cart.open = !this.cart.open;
+          },
+          onCartClosed: function(val){
+              this.cart.open = val;
           }
         },
         created: function(){
