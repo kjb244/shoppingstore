@@ -1,18 +1,23 @@
 <template>
-    <div class="mt-5 row">
-        hi
-    </div>
+    <section>
+        <Item type="all"></Item>
+    </section>
 
 
 
 </template>
 
 <script>
+    import Item from './item.vue';
+
 
 
     export default {
         name: 'all',
         props: [],
+        components:{
+            Item,
+        },
         data(){
             return{
 

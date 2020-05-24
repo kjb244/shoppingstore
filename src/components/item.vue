@@ -122,9 +122,10 @@
         components:{
             CartModal,
         },
-        props: [],
+        props: ['type'],
         data(){
             return{
+                itemType: this.type,
                 showSpinner: true,
                 route: '',
                 modal: {
@@ -189,7 +190,7 @@
         },
         methods: {
             ...mapActions([
-                'getItemData'
+                'getSingleItemData', 'getAllItemData',
             ]),
             randomPicture: function(index){
                 return `https://picsum.photos/400/400/?image=${index+10}`;
@@ -211,38 +212,21 @@
 
         },
         created: function(){
-            this.getItemData().then((load) => {
-                this.showSpinner = false;
-                this.payload = load;
-                this.route = this.$router.currentRoute.name;
-                //hash of array
-                const countHash = {};
-                this.filterCriteria = this.payload.reduce((accum, item) => {
-                    Object.keys(item.meta).map((key) => {
-                        const valu = item.meta[key];
-                        const arr = countHash[key + "-" + valu] || [];
-                        countHash[key + "-" + valu] = [...arr, valu];
-                        if(!accum[key]){
-                            accum[key] = {
-                                checkboxModel: [],
-                                checkboxOptions: [{text: valu, value: valu}],
-                                checkboxGroupVisible: true,
-                            };
-                        } else if (!accum[key].checkboxOptions.find(e => e.value === valu)){
-                            accum[key].checkboxOptions.push({text: valu, value: valu});
-                        }
-                    });
-                    return accum;
-                },{});
-                Object.keys(this.filterCriteria).map((key) => {
-                    const checkboxOptions = this.filterCriteria[key].checkboxOptions;
-                    checkboxOptions.map((e) =>{
-                        const count = (countHash[key + "-" + e.text] || []).length ;
-                        e.text += " " + count;
-                    });
-                });
+            if(this.itemType === 'single') {
+                this.getSingleItemData().then((load) => {
+                    this.showSpinner = false;
+                    this.filterCriteria = load.filterCriteria;
+                    this.payload = load.payload;
 
-            })
+                });
+            }else if (this.itemType === 'all'){
+                this.getAllItemData().then((load) => {
+                    this.showSpinner = false;
+                    this.filterCriteria = load.filterCriteria;
+                    this.payload = load.payload;
+
+                });
+            }
         }
     }
 </script>

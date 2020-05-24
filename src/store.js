@@ -62,14 +62,33 @@ export default new Vuex.Store({
     removeFromCart: function(context, data){
       context.commit('REMOVE_FROM_CART', data);
     },
-    getItemData: (state) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                let currRoute = router.currentRoute.name;
-                currRoute = currRoute.substr(0,1).toUpperCase() + currRoute.substr(1).toLowerCase();
-                resolve(state.state.routeData.jcrData.routes[currRoute]);
-            },800);
-        });
+    getAllItemData: (state) => {
+      return new Promise((resolve) => {
+          setTimeout(() => {
+              const routes = state.state.routeData.jcrData.routes;
+              const payload = Object.keys(routes).reduce((accum,key) =>{
+                  const valu = routes[key];
+                  accum = [...accum, ...valu];
+                  return accum;
+              },[]);
+
+              const filterCriteria = getFilterCriteria(payload);
+
+              resolve({filterCriteria, payload});
+          },800);
+      });
+    },
+
+    getSingleItemData: (state) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let currRoute = router.currentRoute.name;
+            currRoute = currRoute.substr(0,1).toUpperCase() + currRoute.substr(1).toLowerCase();
+            const payload = state.state.routeData.jcrData.routes[currRoute];
+            const filterCriteria = getFilterCriteria(payload);
+            resolve({filterCriteria, payload});
+        },800);
+    });
     },
     addRouteData (context){
         setTimeout(() => {
@@ -81,3 +100,33 @@ export default new Vuex.Store({
   }
 
 })
+
+function getFilterCriteria(payload){
+
+    const countHash = {};
+    const filterCriteria = payload.reduce((accum, item) => {
+        Object.keys(item.meta || []).map((key) => {
+            const valu = item.meta[key];
+            const arr = countHash[key + "-" + valu] || [];
+            countHash[key + "-" + valu] = [...arr, valu];
+            if(!accum[key]){
+                accum[key] = {
+                    checkboxModel: [],
+                    checkboxOptions: [{text: valu, value: valu}],
+                    checkboxGroupVisible: true,
+                };
+            } else if (!accum[key].checkboxOptions.find(e => e.value === valu)){
+                accum[key].checkboxOptions.push({text: valu, value: valu});
+            }
+        });
+        return accum;
+    },{});
+    Object.keys(filterCriteria).map((key) => {
+        const checkboxOptions = filterCriteria[key].checkboxOptions;
+        checkboxOptions.map((e) =>{
+            const count = (countHash[key + "-" + e.text] || []).length ;
+            e.text += " " + count;
+        });
+    });
+    return filterCriteria;
+}

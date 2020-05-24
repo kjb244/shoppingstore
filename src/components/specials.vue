@@ -1,6 +1,6 @@
 <template>
     <section>
-        <Item></Item>
+        <Item type="single"></Item>
     </section>
 
 

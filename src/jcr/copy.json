@@ -38,10 +38,8 @@
         }
       }
     ],
-    "Subs": {
-    },
-    "Snacks": {
-    },
+    "Subs": [],
+    "Snacks": [],
     "Cheeses": [
       {
         "heading": "Alpine cheese 1",
@@ -81,9 +79,7 @@
         }
       }
     ],
-    "Wine": {
-    },
-    "Dessert": {
-    }
+    "Wine": [],
+    "Dessert": []
   }
 }
