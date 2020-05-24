@@ -3,13 +3,19 @@
         <b-sidebar id="sidebar-right" @hidden="hide()" :visible="open" title="Cart" right shadow>
             <div class="px-3 py-2">
                 <div v-bind:key="route" v-for="(data, route) in cartData">
-                    <div v-bind:key="item.heading" v-for="item in data" class="parent-container mb-2">
-                        <b-img src="https://picsum.photos/100/100/?image=54" fluid thumbnail></b-img>
+                    <transition-group name="fademe" tag="span">
+                        <div v-bind:key="item.heading" v-for="item in data" class="parent-container mb-4 fademe">
 
-                        <p class="mb-0">{{item.heading}}</p>
-                        <span>Select Quantity</span>
-                        <b-form-select v-model="item.quantity" :options="quantitySelected.options" size="sm" class="mt-1"></b-form-select>
-                    </div>
+                                <b-img key="img" src="https://picsum.photos/100/100/?image=54" fluid thumbnail></b-img>
+                                <div key="heading" class="child-container ml-3">
+                                    <p class="mb-1">{{item.heading}}</p>
+                                    <b-form-select v-model="item.quantity" :options="quantitySelected.options" size="sm" class="mt-1 mb-1"></b-form-select>
+                                    <b-link @click="clickDelete(route, item)">Delete</b-link>
+
+                                </div>
+
+                        </div>
+                    </transition-group>
 
                 </div>
 
@@ -23,10 +29,9 @@
 <script>
 
     import Vue from 'vue';
-    import { SidebarPlugin } from 'bootstrap-vue';
-    import { mapGetters } from 'vuex';
-
-
+    import { SidebarPlugin, LinkPlugin } from 'bootstrap-vue';
+    import { mapGetters, mapActions } from 'vuex';
+    Vue.use(LinkPlugin)
     Vue.use(SidebarPlugin);
 
     export default {
@@ -36,7 +41,9 @@
             return{
                 open: this.openProp || false,
                 quantitySelected:{
-                    options:[...Array(11).keys()].slice(1)
+                    options:[...Array(11).keys()].slice(1).map((e) =>{
+                        return { value: e, text: `Quantity: ${e}`};
+                    })
                 },
             }
         },
@@ -46,9 +53,15 @@
             }
         },
         methods: {
-          hide: function(){
+            ...mapActions([
+                'removeFromCart'
+            ]),
+            hide: function(){
               this.$emit("cartClosed", false) ;
-          },
+            },
+            clickDelete: function(route, rec){
+                this.removeFromCart({route, item: rec});
+            }
 
         },
         computed: {
@@ -64,8 +77,31 @@
 
 <style scoped>
 
-    .parent-container{
+    .parent-container, .child-container{
         display: flex;
+    }
+
+    .child-container{
+        flex-direction: column;
+    }
+
+
+    .fademe {
+        transition: all 0.5s;
+
+    }
+    .fademe-enter, .fademe-leave-to
+        /* .card-leave-active for <2.1.8 */ {
+        opacity: 0;
+
+    }
+    .fademe-enter-to {
+        opacity: 1;
+
+    }
+
+    .fademe-leave-active {
+        position: absolute;
     }
 
 </style>

@@ -32,6 +32,15 @@ export default new Vuex.Store({
         }
 
     },
+    REMOVE_FROM_CART: function(state, data){
+      const {route, item } = data;
+      const hashArr = (state.cartData[route] || []).filter(e => e.heading !== item.heading);
+      state.cartData = {
+          ...state.cartData,
+          [route]: hashArr
+      };
+      console.log('current cart after remove', state.cartData);
+    },
     ADD_TO_CART: function(state, data){
         const {route, item, quantity} = data;
         const hashArr = (state.cartData[route] || []).filter(e => e.heading !== item.heading);
@@ -40,57 +49,8 @@ export default new Vuex.Store({
             ...state.cartData,
             [route]: hashArr
         };
-        console.log(state.cartData);
-    },
-    NEXT_ROUTE: function(state, route){
-        const visitedRoutes = state.routeData.visitedRoutes;
-        if(!visitedRoutes.length){
-            visitedRoutes.push('init');
-        }
-        visitedRoutes.push(route);
-        router.push(route);
-    },
-    SUBMIT_CLICK: function(state, data){
-        const {currRoute, nextRoute, form}  = data;
-        state.routeData.forwardBack = 'forward';
-        state.routeData.formData[currRoute] = form;
-        const visitedRoutes = state.routeData.visitedRoutes;
-        if(!visitedRoutes.length){
-            visitedRoutes.push(currRoute);
-        }
-        visitedRoutes.push(nextRoute);
-        //since adding the forward/backward class takes a little time, pause for a bit
-        setTimeout(()=> {
-            router.push(nextRoute);
-        },100);
-
-
-    },
-    SUBMIT_BACK: function(state, data){
-      const {currRoute, nextRoute, form}  = data;
-      state.routeData.forwardBack = 'back';
-      state.routeData.formData[currRoute] = form;
-      const visitedRoutes = state.routeData.visitedRoutes;
-      if(!visitedRoutes.length){
-        visitedRoutes.push(currRoute);
-      }
-      visitedRoutes.push(nextRoute);
-      //since adding the forward/backward class takes a little time, pause for a bit
-      setTimeout(()=> {
-          router.push(nextRoute);
-      },100);
-
-
-
-    },
-
-    ADD_ROUTE_DATA: function(state, data){
-        console.log('adding route data mutation');
-        state.routeData = data;
-    },
-    SET_TEMPLATE: function(state, template){
-        state.template = template;
-    },
+        console.log('current cart after add', state.cartData);
+    }
   },
   actions: {
     clickItem: function(context, item){
@@ -99,13 +59,16 @@ export default new Vuex.Store({
     addToCart: function(context, data){
         context.commit('ADD_TO_CART', data);
     },
+    removeFromCart: function(context, data){
+      context.commit('REMOVE_FROM_CART', data);
+    },
     getItemData: (state) => {
         return new Promise((resolve) => {
             setTimeout(() => {
                 let currRoute = router.currentRoute.name;
                 currRoute = currRoute.substr(0,1).toUpperCase() + currRoute.substr(1).toLowerCase();
                 resolve(state.state.routeData.jcrData.routes[currRoute]);
-            },2000);
+            },800);
         });
     },
     addRouteData (context){

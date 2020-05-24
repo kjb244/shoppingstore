@@ -5,7 +5,7 @@
             <b-navbar-nav>
                 <b-nav-item href="#" v-on:click="clickCart()">
                     <font-awesome-icon icon="shopping-cart" class="mr-1 fa-2x white" />
-                    <b-badge variant="light">9</b-badge>
+                    <b-badge variant="light">{{cart.count}}</b-badge>
 
                 </b-nav-item>
             </b-navbar-nav>
@@ -45,6 +45,7 @@
 
 <script>
     import CartSideBar from './cartsidebar.vue';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'navbar',
@@ -56,13 +57,11 @@
             return{
                 cart: {
                     open: false,
+                    count: 0,
                 },
                 search: '',
 
             }
-        },
-        watch: {
-
         },
         methods: {
           clickCart: function(){
@@ -71,6 +70,21 @@
           onCartClosed: function(val){
               this.cart.open = val;
           }
+        },
+        watch:{
+            'cartData': function(newVal){
+                this.cart.count = (Object.keys(newVal) || []).map((e) =>{
+                    return newVal[e].length
+                }).reduce((accum, e) => {
+                   accum += e;
+                   return accum;
+                },0);
+            }
+        },
+        computed:{
+            ...mapGetters([
+                'cartData',
+            ]),
         },
         created: function(){
         }

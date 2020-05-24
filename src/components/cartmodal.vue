@@ -3,7 +3,6 @@
         <b-modal v-model="showModal" @hide="hide()" title="Add to Your Cart">
 
             <b-row no-gutters>
-                {{item}}
                 <b-col cols="6">
                     <b-card-img src="https://picsum.photos/400/400/?image=10" alt="Image" class="rounded-0"></b-card-img>
                 </b-col>
