@@ -17,15 +17,20 @@
             <div class="row mt-3">
                 <div class="col col-12 col-sm-4">
                     <article>
-                        <div v-bind:key="key" v-for="(item, key, index) in filterCriteria">
-                            <b-form-group :label="key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()" label-class="font-weight-bold">
-                                <b-form-checkbox-group
-                                        :id="index.toString()"
-                                        v-model="item.checkboxModel"
-                                        :options="item.checkboxOptions"
-                                        stacked
-                                ></b-form-checkbox-group>
-                            </b-form-group>
+                        <div v-bind:key="key" v-for="(item, key, index) in filterCriteria" class="mb-3">
+
+                            <b-link @click="item.checkboxGroupVisible = !item.checkboxGroupVisible">
+                                {{key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()}}
+                            </b-link>
+                            <b-collapse :visible="item.checkboxGroupVisible" :id="index.toString()" class="mt-2">
+                            <b-form-checkbox-group
+                                    :id="index.toString()"
+                                    v-model="item.checkboxModel"
+                                    :options="item.checkboxOptions"
+                                    stacked>
+                            </b-form-checkbox-group>
+                            </b-collapse>
+
                         </div>
 
 
@@ -101,12 +106,16 @@
     import Vue from 'vue';
     import { mapGetters, mapActions } from 'vuex';
     import { SpinnerPlugin } from 'bootstrap-vue';
+    import { CollapsePlugin } from 'bootstrap-vue'
     import { FormInputPlugin } from 'bootstrap-vue'
     import {CardPlugin} from 'bootstrap-vue';
     import CartModal from './cartmodal.vue';
+
     Vue.use(FormInputPlugin);
     Vue.use(SpinnerPlugin);
     Vue.use(CardPlugin);
+    Vue.use(CollapsePlugin);
+
 
     export default {
         name: 'item',
@@ -216,7 +225,8 @@
                         if(!accum[key]){
                             accum[key] = {
                                 checkboxModel: [],
-                                checkboxOptions: [{text: valu, value: valu}]
+                                checkboxOptions: [{text: valu, value: valu}],
+                                checkboxGroupVisible: true,
                             };
                         } else if (!accum[key].checkboxOptions.find(e => e.value === valu)){
                             accum[key].checkboxOptions.push({text: valu, value: valu});
@@ -261,6 +271,7 @@
     legend{
         font-weight: bold !important;
     }
+
 
 
 
