@@ -16,8 +16,8 @@
             </div>
             <div class="row mt-3">
                 <div class="col col-12 col-sm-4">
-                    <article>
-                        <div v-bind:key="key" v-for="(item, key, index) in filterCriteria" class="mb-3">
+                    <article class="filter-criteria-parent mb-3">
+                        <div v-bind:key="key + index" v-for="(item, key, index) in filterCriteria" class="mb-3">
 
                             <b-link @click="item.checkboxGroupVisible = !item.checkboxGroupVisible">
                                 {{key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()}}
@@ -44,7 +44,7 @@
                     <div class="details">
                         <div class="mt-3 d-none d-md-block">
                             <div class="row">
-                                <div v-for="(rec, index) in filterCheckboxesAndSearch" :key="rec.heading" class="col col-12 col-sm-12 col-md-6 col-lg-4">
+                                <div v-for="(rec, index) in filterCheckboxesAndSearch" :key="rec.heading + index" class="col col-12 col-sm-12 col-md-6 col-lg-4">
                                     <b-card :title="rec.heading" :img-src=randomPicture(index)
                                             img-alt="Image" img-top tag="article"
                                             style="" class="mb-2" bg-variant="light">
@@ -65,7 +65,7 @@
                         </div>
                         <div class="mt-3 d-block d-md-none">
                             <div class="row">
-                                <b-card v-for="(rec, index) in filterCheckboxesAndSearch" :key="rec.heading" no-body class="overflow-hidden mb-3" style="max-width: 540px;">
+                                <b-card v-for="(rec, index) in filterCheckboxesAndSearch" :key="rec.heading + index" no-body class="overflow-hidden mb-3" style="max-width: 540px;">
                                     <b-row no-gutters>
                                         <b-col cols="6">
                                             <b-card-img :src="randomPicture(index)" alt="Image" class="rounded-0"></b-card-img>
@@ -212,6 +212,7 @@
 
         },
         created: function(){
+            this.route = this.$router.currentRoute.name;
             if(this.itemType === 'single') {
                 this.getSingleItemData().then((load) => {
                     this.showSpinner = false;
@@ -252,9 +253,26 @@
         background-color: #f8f8f8;
     }
 
-    legend{
-        font-weight: bold !important;
+
+    @media only screen and (max-width: 575px) {
+        .filter-criteria-parent {
+            display: flex;
+            flex-wrap: wrap;
+
+
+        }
+
+        .filter-criteria-parent > div:first-child{
+            flex: 0 0 32.33%;
+            margin-right: 1%;
+        }
+
+        .filter-criteria-parent > div:nth-child(n+2){
+            flex: 1 0 32.33%;
+            margin-right: 1%;
+        }
     }
+
 
 
 
