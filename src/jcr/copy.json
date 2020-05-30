@@ -3,7 +3,7 @@
     "All": [],
     "Specials": [
       {
-        "heading": "Alpine cheese 1",
+        "heading": "Bubble Gum",
         "subHeading": "alkd lajsdf",
         "img": "",
         "price": "23.23",
@@ -39,7 +39,27 @@
       }
     ],
     "Subs": [],
-    "Snacks": [],
+    "Snacks": [
+      {
+        "heading": "Crackers 1",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "deals": "Sale",
+          "brand": "Nabisco"
+        }
+      },
+      {
+        "heading": "Crackers 2",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "brand": "Alpine"
+        }
+      }
+    ],
     "Cheeses": [
       {
         "heading": "Alpine cheese 1",
@@ -79,7 +99,67 @@
         }
       }
     ],
-    "Wine": [],
-    "Dessert": []
+    "Wine": [
+      {
+        "heading": "Wine 1",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "deals": "Sale",
+          "brand": "Alpine"
+        }
+      },
+      {
+        "heading": "Wine 2",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "deals": "Sale",
+          "brand": "Kirkland"
+        }
+      },
+      {
+        "heading": "Wine 3",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "deals": "Sale",
+          "brand": "Shoflow"
+        }
+      }
+    ],
+    "Dessert": [
+      {
+        "heading": "Cake 1",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "deals": "Sale",
+          "brand": "Alpine"
+        }
+      },
+      {
+        "heading": "Cake 2",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "brand": "Wegway"
+        }
+      },
+      {
+        "heading": "Cake 3",
+        "subHeading": "alkd lajsdf",
+        "img": "",
+        "price": "23.23",
+        "meta": {
+          "brand": "Yummy"
+        }
+      }
+    ]
   }
 }

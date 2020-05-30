@@ -1,18 +1,21 @@
 <template>
-    <div class="mt-5 row">
-        hi desserts
-    </div>
+    <section>
+        <Item type="single"></Item>
+    </section>
 
 
 
 </template>
 
 <script>
-
+    import Item from './item.vue';
 
     export default {
         name: 'subs',
         props: [],
+        components:{
+            Item,
+        },
         data(){
             return{
 
