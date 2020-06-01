@@ -23,6 +23,15 @@ export default new Vuex.Store({
     },
     cartData: (state) => {
         return state.cartData;
+    },
+    cartCount: (state) =>{
+        const cd = state.cartData;
+        const rtnInteger = Object.keys(cd || {}).reduce((accum, e) =>{
+           const valu = (cd[e] || []).length;
+           accum += valu;
+           return accum;
+        },0);
+        return rtnInteger;
     }
   },
   mutations: {

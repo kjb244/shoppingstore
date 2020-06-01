@@ -1,6 +1,6 @@
 <template>
     <section>
-        <b-sidebar id="sidebar-right" @hidden="hide()" :visible="open" title="Cart" right shadow>
+        <b-sidebar id="sidebar-right" @hidden="hide()" :visible="open" title="Cart" backdrop right shadow>
             <div class="px-3 py-2">
                 <div v-bind:key="route" v-for="(data, route) in cartData">
                     <transition-group name="fademe" tag="span">
@@ -22,6 +22,14 @@
 
             </div>
         </b-sidebar>
+        <div v-show="showStickyCart()" v-b-toggle.sidebar-right class="sticky-button">
+            <b-button variant="success">
+                <font-awesome-icon icon="cart-plus" class="mr-1" />
+                View Cart
+                <b-badge class="ml-1" variant="light">{{cartCount}}</b-badge>
+            </b-button>
+
+        </div>
     </section>
 
 </template>
@@ -61,12 +69,16 @@
             },
             clickDelete: function(route, rec){
                 this.removeFromCart({route, item: rec});
+            },
+            showStickyCart: function(){
+                console.log(this.cartCount);
+                return this.cartCount > 0;
             }
 
         },
         computed: {
             ...mapGetters([
-                'cartData',
+                'cartData', 'cartCount',
             ]),
         },
         created: function(){
@@ -83,6 +95,13 @@
 
     .child-container{
         flex-direction: column;
+    }
+
+    .sticky-button{
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 100;
     }
 
 
