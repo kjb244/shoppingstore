@@ -10,7 +10,14 @@
         <div v-show="!showSpinner" class="detail-container">
             <div class="row">
                 <div class="col col-12">
-                    <b-form-input v-model="form.search" placeholder="Search"></b-form-input>
+                    <b-input-group>
+                        <b-input-group-prepend is-text>
+                            <b-icon-search></b-icon-search>
+
+                        </b-input-group-prepend>
+                        <b-form-input v-model="form.search" placeholder="Search"></b-form-input>
+
+                    </b-input-group>
 
                 </div>
             </div>
@@ -19,9 +26,13 @@
                     <article class="filter-criteria-parent mb-3">
                         <div v-bind:key="key + index" v-for="(item, key, index) in filterCriteria" class="mb-3">
 
-                            <b-link @click="item.checkboxGroupVisible = !item.checkboxGroupVisible">
-                                {{key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()}}
-                            </b-link>
+                            <div class="filter-criteria-heading">
+                                <b-link @click="item.checkboxGroupVisible = !item.checkboxGroupVisible" :class="item.checkboxGroupVisible ? 'right': 'down'">
+                                    {{key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()}}
+                                    <div class="arrow"></div>
+                                </b-link>
+                            </div>
+
                             <b-collapse :visible="item.checkboxGroupVisible" :id="index.toString()" class="mt-2">
                             <b-form-checkbox-group
                                     :id="index.toString()"
@@ -105,7 +116,7 @@
 <script>
     import Vue from 'vue';
     import { mapGetters, mapActions } from 'vuex';
-    import { SpinnerPlugin } from 'bootstrap-vue';
+    import { SpinnerPlugin, BIconSearch } from 'bootstrap-vue';
     import { CollapsePlugin } from 'bootstrap-vue'
     import { FormInputPlugin } from 'bootstrap-vue'
     import {CardPlugin} from 'bootstrap-vue';
@@ -117,10 +128,13 @@
     Vue.use(CollapsePlugin);
 
 
+
     export default {
         name: 'item',
         components:{
             CartModal,
+            BIconSearch
+
         },
         props: ['type'],
         data(){
@@ -271,7 +285,33 @@
             flex: 1 0 32.33%;
             margin-right: 1%;
         }
+
+        .filter-criteria-parent .arrow{
+            margin-right: 15px;
+        }
     }
+
+    .filter-criteria-heading .arrow{
+        border: solid #989494;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(-45deg);
+        transition: all .2s linear;
+    }
+
+
+    .filter-criteria-heading .down .arrow{
+        transform: rotate(45deg);
+    }
+
+    .filter-criteria-heading a{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+
 
 
 
