@@ -5,7 +5,7 @@
             <b-navbar-nav>
                 <b-nav-item href="#" v-on:click="clickCart()">
                     <font-awesome-icon icon="shopping-cart" class="mr-1 fa-2x white" />
-                    <b-badge variant="light">{{cart.count}}</b-badge>
+                    <b-badge variant="light">{{cartCount}}</b-badge>
 
                 </b-nav-item>
             </b-navbar-nav>
@@ -57,7 +57,6 @@
             return{
                 cart: {
                     open: false,
-                    count: 0,
                 },
                 search: '',
 
@@ -83,7 +82,7 @@
         },
         computed:{
             ...mapGetters([
-                'cartData',
+                'cartData', 'cartCount',
             ]),
         },
         created: function(){

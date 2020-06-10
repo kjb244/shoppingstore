@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 //import axios from 'axios';
 import router from './router.js';
 import jcr from './jcr/copy.json';
+import utils from './utilities/utils';
+
 
 Vue.use(Vuex);
 
@@ -22,6 +24,9 @@ export default new Vuex.Store({
         return state.routeData.jcrData
     },
     cartData: (state) => {
+        if(!Object.keys(state.cartData).length){
+            state.cartData = utils.getCartData();
+        }
         return state.cartData;
     },
     cartCount: (state) =>{
@@ -48,6 +53,7 @@ export default new Vuex.Store({
           ...state.cartData,
           [route]: hashArr
       };
+      utils.setCartData(state.cartData);
       console.log('current cart after remove', state.cartData);
     },
     ADD_TO_CART: function(state, data){
@@ -58,6 +64,7 @@ export default new Vuex.Store({
             ...state.cartData,
             [route]: hashArr
         };
+        utils.setCartData(state.cartData);
         console.log('current cart after add', state.cartData);
     }
   },

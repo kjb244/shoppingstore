@@ -71,7 +71,6 @@
                 this.removeFromCart({route, item: rec});
             },
             showStickyCart: function(){
-                console.log(this.cartCount);
                 return this.cartCount > 0;
             }
 
