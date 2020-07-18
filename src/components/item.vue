@@ -61,7 +61,7 @@
                                             style="" class="mb-2" bg-variant="light">
                                         <b-card-text>
                                             <p>{{rec.subHeading}}</p>
-                                            <p><b>{{rec.price}}</b></p>
+                                            <p><b>${{rec.price}}</b></p>
                                         </b-card-text>
                                         <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">
                                             Add
@@ -85,7 +85,7 @@
                                             <b-card-body :title="rec.heading">
                                                 <b-card-text>
                                                     <p>{{rec.subHeading}}</p>
-                                                    <p><b>{{rec.price}}</b></p>
+                                                    <p><b>${{rec.price}}</b></p>
                                                     <br>
                                                     <b-button block href="#" variant="primary" v-on:click="addItemClick(rec)">
                                                         Add
