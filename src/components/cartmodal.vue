@@ -52,10 +52,10 @@
         props: ['node', 'route'],
         data(){
             return{
-                showModal: this.node.showModal,
+                showModal: true,
                 item: this.node.item,
                 quantitySelected:{
-                    quantity: 1,
+                    quantity: this.node.item.quantity || 1,
                     options:[...Array(11).keys()].slice(1)
                 },
             }
@@ -79,7 +79,7 @@
                 return false;
             },
             hide: function(){
-                this.node.showModal = false;
+                this.$emit("modal-closed") ;
             },
             addToCartClick: function(){
                 const data = {
@@ -95,25 +95,7 @@
             }
         },
         watch:{
-            'node.showModal': function(newVal){
-                this.showModal = newVal;
-                if(newVal){
-                    //TO DO - quantity is only defined in cart data and not jcr; maybe refactor to have everything in cart data
-                    const cartNode = this.cartData[this.route];
-                    if(cartNode){
-                        const node = cartNode.find(e => e.heading === this.node.item.heading);
-                        if (node) {
-                            this.quantitySelected.quantity = node.quantity;
-                        }
 
-
-                    }
-                }
-            },
-            'node.item': function(newVal){
-                this.item = newVal;
-
-            },
 
 
         },

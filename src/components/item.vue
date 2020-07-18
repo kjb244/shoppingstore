@@ -69,6 +69,11 @@
                                                 <font-awesome-icon icon="cart-plus" />
                                             </b-badge>
                                         </b-button>
+                                        <CartModal v-if="modal.showModal === true"
+                                                   @modal-closed="modalClosed"
+                                                   :route="route"
+                                                   :node="modal">
+                                        </CartModal>
 
                                     </b-card>
                                 </div>
@@ -92,6 +97,11 @@
                                                         <b-badge v-if="showCart(rec)" variant="light">
                                                             <font-awesome-icon icon="cart-plus" class="" />
                                                         </b-badge>
+                                                        <CartModal v-if="modal.showModal === true"
+                                                                   @modal-closed="modalClosed"
+                                                                   :route="route"
+                                                                   :node="modal">
+                                                        </CartModal>
                                                     </b-button>
                                                 </b-card-text>
                                             </b-card-body>
@@ -106,7 +116,6 @@
                 </div>
             </div>
         </div>
-        <CartModal :route="route" :node="modal"></CartModal>
     </section>
 
 
@@ -209,8 +218,19 @@
             randomPicture: function(index){
                 return `https://picsum.photos/400/400/?image=${index+10}`;
             },
+            modalClosed: function(){ //on modal close emitted event v-if will hide the modal since it's removed from dom
+                this.modal.showModal = false;
+            },
             addItemClick: function(item){
-                this.modal.item = item;
+                const heading = item.heading;
+                const cd = this.cartData[this.route];
+                const itemFromArray = (cd || []).find(e => e.heading === heading);
+                //if we have the data in the cart (aka - quantity) then pull it from there
+                if (itemFromArray){
+                    this.modal.item = itemFromArray;
+                } else{ //else pull it from the jcr (no quantity)
+                    this.modal.item = item;
+                }
                 this.modal.showModal = true;
             },
             showCart: function(item){
