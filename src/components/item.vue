@@ -193,7 +193,7 @@
                 const checkboxFilter =  this.payload.filter((e) => {
                     const metaValues = Object.values(e.meta);
                     if(!cbArr.length) return true;
-                    return metaValues.find(r => cbArr.includes(r));
+                    return cbArr.every((r) => metaValues.includes(r));
                 });
                 //then filter on search
                 const searchFilter = checkboxFilter.filter((e) =>{
