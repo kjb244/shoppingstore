@@ -9,7 +9,7 @@
                                 <b-img key="img" src="https://picsum.photos/100/100/?image=54" fluid thumbnail></b-img>
                                 <div key="heading" class="child-container ml-3">
                                     <p class="mb-1">{{item.heading}}</p>
-                                    <b-form-select v-model="item.quantity" :options="quantitySelected.options" size="sm" class="mt-1 mb-1"></b-form-select>
+                                    <b-form-select @change="selectChange(route, item)" v-model="item.quantity" :options="quantitySelected.options" size="sm" class="mt-1 mb-1"></b-form-select>
                                     <b-link @click="clickDelete(route, item)">Delete</b-link>
 
                                 </div>
@@ -62,7 +62,7 @@
         },
         methods: {
             ...mapActions([
-                'removeFromCart'
+                'removeFromCart', 'addToCart',
             ]),
             hide: function(){
               this.$emit("cartClosed", false) ;
@@ -72,6 +72,15 @@
             },
             showStickyCart: function(){
                 return this.cartCount > 0;
+            },
+            selectChange: function(route, rec){
+                const data = {
+                    item: rec,
+                    quantity: rec.quantity,
+                    route: route
+                };
+                this.addToCart(data);
+
             }
 
         },
