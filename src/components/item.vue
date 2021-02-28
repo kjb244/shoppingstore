@@ -25,7 +25,6 @@
                 <div class="col col-12 col-sm-4">
                     <article class="filter-criteria-parent mb-3">
                         <div v-bind:key="key + index" v-for="(item, key, index) in filterCriteria" class="mb-3">
-
                             <div class="filter-criteria-heading">
                                 <b-link @click="item.checkboxGroupVisible = !item.checkboxGroupVisible" :class="item.checkboxGroupVisible ? 'right': 'down'">
                                     {{key.substr(0,1).toUpperCase() + key.substr(1).toLowerCase()}}
@@ -207,6 +206,7 @@
                 } else if ('z-a' === this.form.sort.selected){
                     searchFilter.sort((a,b) => -1* a.heading.localeCompare(b.heading));
                 }
+                console.log(searchFilter);
 
                 return searchFilter;
             }
